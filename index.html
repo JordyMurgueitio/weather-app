@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- Link to styles -->
+    <link rel="stylesheet" href="./styles.css">
+    <!-- Script for fontawesome -->
+    <script src="https://kit.fontawesome.com/25ee437153.js" crossorigin="anonymous"></script>
+    <!-- Link to js -->
+    <script src="./script.js" defer></script>
+</head>
+<body>
+    <main>
+        <h1>🌤️ Weather App</h1>
+        <section class="search-container">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </section>
+        <section class="weather-app">
+            <div class="main-info-container">
+                <div class="weather-icon-box">
+                    <img id="weather-icon" src="./assets/home.png" alt="Weather Icon" class="weather-icon">
+                </div>
+                <div class="city-temp-box">
+                    <span id="city">Berlin</span>, <span id="country">DE</span>
+                    <p class="main-temp"><span id="temperature">15</span>°C</p>
+                </div>
+            </div>
+            <div class="secondary-info-container">
+                <p class="temp-label"><strong>Condition:</strong> <span id="description" class="result">Few Clouds</span></p>
+                <p class="temp-label"><strong>Feels Like:</strong> <span id="feels-like" class="result">13</span>°C</p>
+                <p class="temp-label"><strong>Min:</strong> <span id="min-temp" class="result">10</span>°C</p>
+                <p class="temp-label"><strong>Max:</strong> <span id="max-temp" class="result">15</span>°C</p>
+            </div>
+            <div class="additional-info-container">
+                <p class="temp-label"><strong>Humidity:</strong> <span id="humidity" class="result">50</span>%</p>
+                <p class="temp-label"><strong>Wind Speed:</strong> <span id="wind-speed" class="result">5</span> m/s</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

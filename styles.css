@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #07e4f0;
+    color: #333;
+}
+h1 {
+    text-align: center;
+    color: #fff;
+    margin: 50px 0;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.search-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto 50px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+.search-container input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+.search-container button {
+    padding: 10px 10px;
+    border: none;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #07e4f0;
+    font-size: 1em;
+    cursor: pointer;
+}
+.search-container button:hover {
+    background-color: #f0f0f0;
+}
+.weather-app {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.main-info-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.weather-icon-box {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.weather-icon {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+.city-temp-box {
+    font-size: 2.3rem;  /* font size for comma between variables */
+}
+#city, #country {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: #333;
+}
+.main-temp {
+    font-size: 2rem;
+    margin-top: 10px;
+}
+.secondary-info-container {
+    padding: 30px 0 20px 0;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+}
+.temp-label {
+    font-size: 1.1rem;
+    color: #000000;
+    margin: 5px 0;
+}
+.additional-info-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0 0 0;
+    border-top: 1px solid #bcbaba;
+}
