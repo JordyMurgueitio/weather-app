@@ -20,7 +20,7 @@ const windSpeed = document.getElementById('wind-speed');
 const updateUI = (weatherData) => {
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
     temperature.textContent = `${Math.round(weatherData.main.temp)}°C`;
-    weatherDescription.textContent = weatherData.weather[0].description;
+    weatherDescription.textContent = weatherData.weather[0].main;
     feelsLike.textContent = `${Math.round(weatherData.main.feels_like)}°C`;
     minTemperature.textContent = `${Math.round(weatherData.main.temp_min)}°C`;
     maxTemperature.textContent = `${Math.round(weatherData.main.temp_max)}°C`;
