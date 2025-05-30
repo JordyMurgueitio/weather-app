@@ -55,11 +55,12 @@ h1 {
 }
 .main-info-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 20px;
     align-items: center;
 }
 .weather-icon-box {
-    width: 100px;
+    width: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,22 +68,21 @@ h1 {
 .weather-icon {
     width: 100%;
     height: auto;
-    border-radius: 50%;
 }
 .city-temp-box {
     font-size: 2.3rem;  /* font size for comma between variables */
 }
-#city, #country {
+#city {
     font-size: 2.3rem;
     font-weight: bold;
-    color: #333;
+    color: #4e6262;
 }
 .main-temp {
     font-size: 2rem;
     margin-top: 10px;
 }
 .secondary-info-container {
-    padding: 30px 0 20px 0;
+    padding: 20px 0 20px 0;
     display: flex;
     margin: 0 auto;
     flex-direction: column;
@@ -92,6 +92,10 @@ h1 {
     font-size: 1.1rem;
     color: #000000;
     margin: 5px 0;
+    font-weight: bold;
+}
+.result {
+    font-weight: normal;
 }
 .additional-info-container {
     display: flex;

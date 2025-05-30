@@ -16,27 +16,28 @@
         <h1>🌤️ Weather App</h1>
         <section class="search-container">
             <input type="text" id="city-input" placeholder="Enter city name">
-            <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button id="search-button" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
         </section>
-        <section class="weather-app">
+        <section id="weather-app" class="weather-app" hidden>
+            <p id="error-mesage" class="error-message" style="display: none;">City not found</p>
             <div class="main-info-container">
                 <div class="weather-icon-box">
-                    <img id="weather-icon" src="./assets/home.png" alt="Weather Icon" class="weather-icon">
+                    <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
                 </div>
                 <div class="city-temp-box">
-                    <span id="city">Berlin</span>, <span id="country">DE</span>
-                    <p class="main-temp"><span id="temperature">15</span>°C</p>
+                    <h2 id="city"></h2>
+                    <p class="main-temp" id="temperature"></p>
                 </div>
             </div>
             <div class="secondary-info-container">
-                <p class="temp-label"><strong>Condition:</strong> <span id="description" class="result">Few Clouds</span></p>
-                <p class="temp-label"><strong>Feels Like:</strong> <span id="feels-like" class="result">13</span>°C</p>
-                <p class="temp-label"><strong>Min:</strong> <span id="min-temp" class="result">10</span>°C</p>
-                <p class="temp-label"><strong>Max:</strong> <span id="max-temp" class="result">15</span>°C</p>
+                <p class="temp-label">Condition: <span id="description" class="result"></span></p>
+                <p class="temp-label">Feels Like: <span id="feels-like" class="result"></span></p>
+                <p class="temp-label">Min: <span id="min-temp" class="result"></span></p>
+                <p class="temp-label">Max: <span id="max-temp" class="result"></span></p>
             </div>
             <div class="additional-info-container">
-                <p class="temp-label"><strong>Humidity:</strong> <span id="humidity" class="result">50</span>%</p>
-                <p class="temp-label"><strong>Wind Speed:</strong> <span id="wind-speed" class="result">5</span> m/s</p>
+                <p class="temp-label">Humidity: <span id="humidity" class="result"></span></p>
+                <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span></p>
             </div>
         </section>
     </main>
