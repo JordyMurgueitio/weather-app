@@ -1,6 +1,14 @@
 const API_KEY = 'ba54bb9c3687f85898cfa1521e635e64';
 const weatherBaseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
+/* Custom weather icons */
+const iconMap  = {
+    '01n': './assets/night-clear.png',
+    '01d': './assets/clear-day.png',
+    '50d': './assets/fog-day.png',
+    '50n': './assets/fog-night.png',
+};
+
 
 /* Selecting html elements */
 const weatherApp = document.getElementById('weather-app');
@@ -27,7 +35,12 @@ const updateUI = (weatherData) => {
     humidity.textContent = `${weatherData.main.humidity} %`;
     windSpeed.textContent = `${Math.round(weatherData.wind.speed)} m/s`;
     const iconCode = weatherData.weather[0].icon;
-    weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    const customIcon = iconMap[iconCode];
+    if (customIcon) {
+        weatherIcon.src = customIcon; // Use custom icon if available
+    } else {
+        weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    };
     weatherIcon.alt = weatherData.weather[0].description;
 };
 
