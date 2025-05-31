@@ -11,6 +11,7 @@ const iconMap  = {
 
 
 /* Selecting html elements */
+const errorMessage = document.getElementById('error-message');
 const weatherApp = document.getElementById('weather-app');
 const searchInput = document.getElementById('city-input');
 const searchButton = document.getElementById('search-button');
@@ -24,6 +25,27 @@ const maxTemperature = document.getElementById('max-temp');
 const humidity = document.getElementById('humidity');
 const windSpeed = document.getElementById('wind-speed');
 
+
+const getWeather = async (city) => {
+    const requestParams = `?q=${city}&appid=${API_KEY}&units=metric`;
+    const urlToFetch = `${weatherBaseUrl}${requestParams}`;
+    try {
+        const response = await fetch(urlToFetch);
+        if (response.ok) {
+            const weatherData = await response.json();
+            updateUI(weatherData);
+            errorMessage.style.display = 'none';
+            weatherApp.removeAttribute('hidden'); 
+        } else {
+            errorMessage.style.display = 'block';
+            weatherApp.setAttribute('hidden', true);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        errorMessage.style.display = 'block';
+        weatherApp.setAttribute('hidden', true);
+    }
+};
 
 const updateUI = (weatherData) => {
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
@@ -44,31 +66,20 @@ const updateUI = (weatherData) => {
     weatherIcon.alt = weatherData.weather[0].description;
 };
 
-const getWeather = async (city) => {
-    const requestParams = `?q=${city}&appid=${API_KEY}&units=metric`;
-    const urlToFetch = `${weatherBaseUrl}${requestParams}`;
-    try {
-        const response = await fetch(urlToFetch);
-        if (response.ok) {
-            const weatherData = await response.json();
-            updateUI(weatherData);
-        } else {
-            console.log('Error fetching weather data');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
-
 
 
 searchButton.addEventListener('click', () => {
     const city = searchInput.value;
     if (city !== '') {
         getWeather(city);
-        weatherApp.removeAttribute('hidden'); // Show the weather app
         searchInput.value = ''; // Clear the input field after search
     } else {
         console.log('Please enter a city name');
+    };
+    errorMessage.style.display = 'none'; // Hide error message on new search
+});
+searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        searchButton.click();
     }
 });
