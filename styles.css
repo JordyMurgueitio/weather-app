@@ -7,7 +7,11 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #07e4f0;
-    color: #333;
+    background-image: url(./assets/weather-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 h1 {
     text-align: center;
@@ -49,13 +53,13 @@ h1 {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff48;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.293);
 }
 .main-info-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     gap: 20px;
     align-items: center;
 }
@@ -71,28 +75,29 @@ h1 {
 }
 #city {
     font-size: 2.3rem;
-    font-weight: bold;
-    color: #4e6262;
+    color: #000000;
 }
 .main-temp {
     font-size: 2rem;
+    font-weight: bold;
     margin-top: 10px;
 }
 .secondary-info-container {
-    padding: 20px 0 20px 0;
+    padding: 10px 0 20px 0;
     display: flex;
-    margin: 0 auto;
     flex-direction: column;
     align-items: center;
+    border-top: 1px solid #bcbaba;
 }
 .temp-label {
     font-size: 1.1rem;
-    color: #000000;
+    color: #2ebbc2;
     margin: 5px 0;
     font-weight: bold;
 }
 .result {
     font-weight: normal;
+    color: #000000;
 }
 .additional-info-container {
     display: flex;
