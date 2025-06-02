@@ -60,8 +60,10 @@ const updateUI = (weatherData) => {
     const customIcon = iconMap[iconCode];
     if (customIcon) {
         weatherIcon.src = customIcon; // Use custom icon if available
+        weatherIcon.style.width = '80px'; // Set width for custom icons
     } else {
         weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+        weatherIcon.style.width = '100px'; // Set width for custom icons
     };
     weatherIcon.alt = weatherData.weather[0].description;
 };
