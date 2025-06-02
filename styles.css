@@ -86,7 +86,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff92;
+    background-color: #cdc7c75c;
+    border-radius: 5px 5px 0 0;
     gap: 10px;
 }
 .weather-icon-box {
@@ -154,5 +155,9 @@ body {
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
+        padding: 5px 0;
+    }
+    .main-temp {
+    margin: 10px 0 0 0;
     }
 }
