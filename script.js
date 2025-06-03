@@ -48,7 +48,7 @@ let currentUnit = 'metric'; // default
 let lastSearchedCity = ''; // updates after each search
 
 
-
+// Function to fetch weather data based on city name
 const getWeather = async (city) => {
     const requestParams = `?q=${city}&appid=${API_KEY}&units=${currentUnit}`;
     const urlToFetch = `${weatherBaseUrl}${requestParams}`;
@@ -70,6 +70,20 @@ const getWeather = async (city) => {
     }
 };
 
+// Function to update unit symbols based on the current unit
+const updateUnitSymbols = () => {
+    const degree = currentUnit === 'metric' ? '°C' : '°F';
+    const speed = currentUnit === 'metric' ? 'm/s' : 'mph';
+    degreeSymbols.forEach(symbol => {
+        symbol.textContent = degree;
+    });
+    speedSymbol.textContent = speed;
+    toggleUnitButton.innerHTML = currentUnit === 'metric' 
+        ? '<span class="active">°C</span> | <span>°F</span>' 
+        : '<span>°C</span> | <span class="active">°F</span>';
+}
+
+// Function to update the UI with fetched weather data
 const updateUI = (weatherData) => {
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
     temperature.textContent = Math.round(weatherData.main.temp);
@@ -85,12 +99,7 @@ const updateUI = (weatherData) => {
         weatherIcon.src = customIcon; // Use custom icon if available
     };
     weatherIcon.alt = weatherData.weather[0].description;
-    degreeSymbols.forEach(symbol => {
-        symbol.textContent = currentUnit === 'metric' ? '°C' : '°F';
-    });
-    currentUnit === 'metric' ? speedSymbol.textContent = 'm/s' : speedSymbol.textContent = 'mph';
-    toggleUnitButton.innerHTML = currentUnit === 'metric' ? '<span class="active">°C</span> | <span>°F</span>' 
-    : '<span>°C</span> | <span class="active">°F</span>';
+    updateUnitSymbols(); // Update unit symbols based on current unit
 };
 
 
