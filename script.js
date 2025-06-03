@@ -81,7 +81,29 @@ const updateUnitSymbols = () => {
     toggleUnitButton.innerHTML = currentUnit === 'metric' 
         ? '<span class="active">°C</span> | <span>°F</span>' 
         : '<span>°C</span> | <span class="active">°F</span>';
-}
+};
+
+
+// function to update the background image depending on the weather condition
+const setDynamicBackground = (condition, iconCode) => {
+    const isNight = iconCode.endsWith('n');
+    const backgroundMap = {
+        'clear': isNight ? './assets/clear-night-bg.jpg' : './assets/clear-day-bg.jpg',
+        'clouds': './assets/clouds-bg.jpg',
+        'rain': './assets/rain-bg.jpg',
+        'thunderstorm': './assets/thunderstorm-bg.jpg',
+        'snow': './assets/snow-bg.jpg',
+        'drizzle': './assets/rain-bg.jpg',
+        'mist': './assets/haze-bg.jpg',
+        'haze': './assets/haze-bg.jpg',
+        'fog': './assets/haze-bg.jpg',
+        'smoke': './assets/haze-bg.jpg',
+    };
+    const key = condition.toLowerCase();
+    const backgroundImage = backgroundMap[key] || './assets/bg-image.jpg';
+    document.querySelector('.content-wrapper').style.backgroundImage = `url(${backgroundImage})`;
+};
+
 
 // Function to update the UI with fetched weather data
 const updateUI = (weatherData) => {
@@ -99,6 +121,8 @@ const updateUI = (weatherData) => {
         weatherIcon.src = customIcon; // Use custom icon if available
     };
     weatherIcon.alt = weatherData.weather[0].description;
+    const weatherCondition = weatherData.weather[0].main.toLowerCase();
+    setDynamicBackground(weatherCondition, iconCode);
     updateUnitSymbols(); // Update unit symbols based on current unit
 };
 
