@@ -3,10 +3,24 @@ const weatherBaseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 /* Custom weather icons */
 const iconMap  = {
-    '01n': './assets/night-clear.png',
-    '01d': './assets/clear-day.png',
-    '50d': './assets/fog-day.png',
-    '50n': './assets/fog-night.png',
+    '01n': './assets/moon.png',
+    '01d': './assets/sun.png',
+    '02n': './assets/clouds-night.png',
+    '02d': './assets/clouds-day.png',
+    '03n': './assets/cloud.png',
+    '03d': './assets/cloud.png',
+    '04n': './assets/cloud.png',
+    '04d': './assets/cloud.png',
+    '09n': './assets/shower-rain.png',
+    '09d': './assets/rain-day.png',
+    '10n': './assets/heavy-rain.png',
+    '10d': './assets/heavy-rain.png',
+    '11n': './assets/thunderstorm.png',
+    '11d': './assets/thunderstorm.png',
+    '13n': './assets/snow.png',
+    '13d': './assets/snow.png',
+    '50d': './assets/fog.png',
+    '50n': './assets/fog.png',
 };
 
 
@@ -60,10 +74,6 @@ const updateUI = (weatherData) => {
     const customIcon = iconMap[iconCode];
     if (customIcon) {
         weatherIcon.src = customIcon; // Use custom icon if available
-        weatherIcon.style.width = '80px'; // Set width for custom icons
-    } else {
-        weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-        weatherIcon.style.width = '100px'; // Set width for custom icons
     };
     weatherIcon.alt = weatherData.weather[0].description;
 };

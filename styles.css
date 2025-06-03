@@ -48,6 +48,7 @@ body {
     width: 70%;
     padding: 10px;
     border: 1px solid #bcbaba;
+    background-color: rgb(255, 255, 255);
     border-right: none;
     border-radius: 5px 0 0 5px;
     font-size: 1rem;
@@ -76,7 +77,7 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #32333665;
+    background-color: #ffffff4c;
     border-radius: 10px;
     border: 1px solid #ffffff;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.293);
@@ -86,12 +87,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #cdc7c75c;
     border-radius: 5px 5px 0 0;
     gap: 10px;
 }
 .weather-icon-box {
-    max-width: 100px;
+    width: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,7 +116,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-top: 1px solid #bcbaba;
+    border-top: 1px solid #b6b1b1;
 }
 .temp-label {
     font-size: 1.1rem;
@@ -125,7 +125,7 @@ body {
     margin: 5px 0;
 }
 .result {
-    color: #ffffff;
+    color: #000000;
     font-weight: normal;
 }
 .additional-info-container {
@@ -134,7 +134,7 @@ body {
     justify-content: space-around;
     align-items: center;
     padding: 10px 0 0 0;
-    border-top: 1px solid #bcbaba;
+    border-top: 1px solid #b6b1b1;
 }
 
 
