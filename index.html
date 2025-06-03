@@ -29,21 +29,25 @@
                     </div>
                     <div class="city-temp-box">
                         <h2 id="city"></h2>
-                        <p class="main-temp" id="temperature"></p>
+                        <p class="main-temp">
+                            <span id="temperature" class="result"></span> <span class="degree-symbol unit"></span>
+                            <button id="unit-toggle" class="unit-toggle" aria-label="Toggle between Celsius and Fahrenheit"></button>
+                        </p>
                     </div>
                 </div>
                 <div class="secondary-info-container">
-                    <p class="temp-label">Min: <span id="min-temp" class="result"></span></p>
-                    <p class="temp-label">Max: <span id="max-temp" class="result"></span></p>
+                    <p class="temp-label">Min: <span id="min-temp" class="result"></span> <span class="degree-symbol unit"></span></p>
+                    <p class="temp-label">Max: <span id="max-temp" class="result"></span> <span class="degree-symbol unit"></span></p>
                     <p class="temp-label">Condition: <span id="description" class="result"></span></p>
-                    <p class="temp-label">Feels Like: <span id="feels-like" class="result"></span></p>
+                    <p class="temp-label">Feels Like: <span id="feels-like" class="result"></span> <span class="degree-symbol unit"></span></p>
                 </div>
                 <div class="additional-info-container">
-                    <p class="temp-label">Humidity: <span id="humidity" class="result"></span></p>
-                    <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span></p>
+                    <p class="temp-label">Humidity: <span id="humidity" class="result"></span> <span class="unit">%</span></p>
+                    <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span> <span class="speed-symbol unit"></span></p>
                 </div>
             </section>
         </div>
     </main>
 </body>
 </html>
+
