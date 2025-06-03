@@ -32,16 +32,25 @@ const searchButton = document.getElementById('search-button');
 const weatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
 const temperature = document.getElementById('temperature');
+const toggleUnitButton = document.getElementById('unit-toggle');
 const weatherDescription = document.getElementById('description');
 const feelsLike = document.getElementById('feels-like');
 const minTemperature = document.getElementById('min-temp');
 const maxTemperature = document.getElementById('max-temp');
 const humidity = document.getElementById('humidity');
 const windSpeed = document.getElementById('wind-speed');
+const degreeSymbols = document.querySelectorAll('.degree-symbol');
+const speedSymbol = document.querySelector('.speed-symbol');
+
+
+// variables to toggle units
+let currentUnit = 'metric'; // default
+let lastSearchedCity = ''; // updates after each search
+
 
 
 const getWeather = async (city) => {
-    const requestParams = `?q=${city}&appid=${API_KEY}&units=metric`;
+    const requestParams = `?q=${city}&appid=${API_KEY}&units=${currentUnit}`;
     const urlToFetch = `${weatherBaseUrl}${requestParams}`;
     try {
         const response = await fetch(urlToFetch);
@@ -63,26 +72,32 @@ const getWeather = async (city) => {
 
 const updateUI = (weatherData) => {
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
-    temperature.textContent = `${Math.round(weatherData.main.temp)}°C`;
+    temperature.textContent = Math.round(weatherData.main.temp);
     weatherDescription.textContent = weatherData.weather[0].main;
-    feelsLike.textContent = `${Math.round(weatherData.main.feels_like)}°C`;
-    minTemperature.textContent = `${Math.round(weatherData.main.temp_min)}°C`;
-    maxTemperature.textContent = `${Math.round(weatherData.main.temp_max)}°C`;
-    humidity.textContent = `${weatherData.main.humidity} %`;
-    windSpeed.textContent = `${Math.round(weatherData.wind.speed)} m/s`;
+    feelsLike.textContent = Math.round(weatherData.main.feels_like);
+    minTemperature.textContent = Math.round(weatherData.main.temp_min);
+    maxTemperature.textContent = Math.round(weatherData.main.temp_max);
+    humidity.textContent = weatherData.main.humidity;
+    windSpeed.textContent = Math.round(weatherData.wind.speed);
     const iconCode = weatherData.weather[0].icon;
     const customIcon = iconMap[iconCode];
     if (customIcon) {
         weatherIcon.src = customIcon; // Use custom icon if available
     };
     weatherIcon.alt = weatherData.weather[0].description;
+    degreeSymbols.forEach(symbol => {
+        symbol.textContent = currentUnit === 'metric' ? '°C' : '°F';
+    });
+    currentUnit === 'metric' ? speedSymbol.textContent = 'm/s' : speedSymbol.textContent = 'mph';
+    toggleUnitButton.textContent = currentUnit === 'metric' ? '[°C | °F]' : '[°F | °C]';
 };
 
 
 
 searchButton.addEventListener('click', () => {
-    const city = searchInput.value;
+    const city = searchInput.value.trim();
     if (city !== '') {
+        lastSearchedCity = city; // Update last searched city
         getWeather(city);
         searchInput.value = ''; // Clear the input field after search
     } else {
@@ -90,8 +105,17 @@ searchButton.addEventListener('click', () => {
     };
     errorMessage.style.display = 'none'; // Hide error message on new search
 });
+
 searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         searchButton.click();
     }
 });
+
+toggleUnitButton.addEventListener('click', () => {
+    currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
+    if (lastSearchedCity) {
+        getWeather(lastSearchedCity); // Fetch weather for the last searched city with new unit
+    }
+});
+
