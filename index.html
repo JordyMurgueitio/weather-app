@@ -12,27 +12,28 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <main>
-        <div class="content-wrapper">
-            <section class="header-container">
+    <main class="content-wrapper">
+        <section class="header-container">
                 <h1>🌤️ Weather App</h1>
                 <div class="search-container">
                     <input type="text" id="city-input" placeholder="Enter city name">
                     <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-            </section>
-            <p id="error-message" class="error-message" style="display: none;">City not found</p>
-            <section id="weather-app" class="weather-app" hidden>
+        </section>
+        <p id="error-message" class="error-message" style="display: none;">City not found</p>
+        <section id="weather-app" class="weather-app" hidden>
                 <div class="main-info-container">
                     <div class="weather-icon-box">
                         <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
                     </div>
                     <div class="city-temp-box">
                         <h2 id="city"></h2>
-                        <p class="main-temp">
-                            <span id="temperature" class="result"></span> <span class="degree-symbol unit"></span>
-                            <button id="unit-toggle" class="unit-toggle" aria-label="Toggle between Celsius and Fahrenheit"></button>
-                        </p>
+                        <div class="main-temp">
+                            <span id="temperature"></span><span class="degree-symbol unit"></span>
+                            <button id="unit-toggle" class="unit-toggle" aria-label="Toggle between Celsius and Fahrenheit">
+                                <span class="active">°C</span> | <span>°F</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="secondary-info-container">
@@ -45,8 +46,7 @@
                     <p class="temp-label">Humidity: <span id="humidity" class="result"></span> <span class="unit">%</span></p>
                     <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span> <span class="speed-symbol unit"></span></p>
                 </div>
-            </section>
-        </div>
+        </section>
     </main>
 </body>
 </html>

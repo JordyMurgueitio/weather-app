@@ -89,7 +89,8 @@ const updateUI = (weatherData) => {
         symbol.textContent = currentUnit === 'metric' ? '°C' : '°F';
     });
     currentUnit === 'metric' ? speedSymbol.textContent = 'm/s' : speedSymbol.textContent = 'mph';
-    toggleUnitButton.textContent = currentUnit === 'metric' ? '[°C | °F]' : '[°F | °C]';
+    toggleUnitButton.innerHTML = currentUnit === 'metric' ? '<span class="active">°C</span> | <span>°F</span>' 
+    : '<span>°C</span> | <span class="active">°F</span>';
 };
 
 
