@@ -120,6 +120,9 @@ body {
     margin: 0 0 0 20px;
     color: #000000;
 }
+.unit-toggle span {
+    color: #000000;
+}
 .unit-toggle .active {
     font-weight: bold;
     background-color: #000000;
