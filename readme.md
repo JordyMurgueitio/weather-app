@@ -15,9 +15,11 @@ Check out the live version of the app:
 
 ## 📸 Screenshots
 
-![Mobile Screenshot](./assets/readme-screenshot.png)
-![Desktop Screenshot](./assets/readme-screenshot2.png)
-
+<div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-evenly; align-items: flex-start;">
+  <img src="./assets/readme-screenshot.png" alt="Home view" style="width: 300px;">
+  <img src="./assets/readme-screenshot2.png" alt="app view" style="width: 300px;">
+  <img src="./assets/readme-screenshot3.png" alt="app view mobile" style="width: 300px;">
+</div>
 ## ✨ Features
 
 - 🔍 Seach by City
