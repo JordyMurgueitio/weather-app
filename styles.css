@@ -67,6 +67,19 @@ body {
 #search-button:hover {
     background-color: #484b4e;
 }
+#geo-location-button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#geo-location-button:hover {
+    background-color: #484b4e;
+}
 .error-message {
     color: #000000;
     font-size: 1.8rem;
@@ -77,7 +90,7 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff4c;
+    background-color: #ffffff64;
     border-radius: 10px;
     border: 1px solid #ffffff;
     color: #000000;

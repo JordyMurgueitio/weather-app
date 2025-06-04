@@ -29,6 +29,7 @@ const errorMessage = document.getElementById('error-message');
 const weatherApp = document.getElementById('weather-app');
 const searchInput = document.getElementById('city-input');
 const searchButton = document.getElementById('search-button');
+const myLocationButton = document.getElementById('geo-location-button');
 const weatherIcon = document.getElementById('weather-icon');
 const cityName = document.getElementById('city');
 const temperature = document.getElementById('temperature');
@@ -43,10 +44,11 @@ const degreeSymbols = document.querySelectorAll('.degree-symbol');
 const speedSymbol = document.querySelector('.speed-symbol');
 
 
-// variables to toggle units
+// STATE VARIABLES
 let currentUnit = 'metric'; // default
 let lastSearchedCity = ''; // updates after each search
-
+let lastSearchType = 'city';
+let lastCoords = { lat: null, lon: null }; // stores last known coordinates
 
 // Function to fetch weather data based on city name
 const getWeather = async (city) => {
@@ -64,7 +66,29 @@ const getWeather = async (city) => {
             weatherApp.setAttribute('hidden', true);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching weather data:', error);
+        errorMessage.style.display = 'block';
+        weatherApp.setAttribute('hidden', true);
+    }
+};
+
+// Function to fetch weather data based on geolocation
+const getWeatherByCoords = async (lat, lon) => {
+    const requestParams = `?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${currentUnit}`;
+    const urlToFetch = `${weatherBaseUrl}${requestParams}`;
+    try {
+        const response = await fetch(urlToFetch);
+        if (response.ok) {
+            const weatherData = await response.json();
+            updateUI(weatherData);
+            errorMessage.style.display = 'none';
+            weatherApp.removeAttribute('hidden'); 
+        } else {
+            errorMessage.style.display = 'block';
+            weatherApp.setAttribute('hidden', true);
+        }
+    } catch (error) {
+        console.error('Geolocation fetch error:', error);
         errorMessage.style.display = 'block';
         weatherApp.setAttribute('hidden', true);
     }
@@ -127,11 +151,12 @@ const updateUI = (weatherData) => {
 };
 
 
-
+/* EVENT LISTENERS */
 searchButton.addEventListener('click', () => {
     const city = searchInput.value.trim();
     if (city !== '') {
         lastSearchedCity = city; // Update last searched city
+        lastSearchType = 'city'; // Update last search type
         getWeather(city);
         searchInput.value = ''; // Clear the input field after search
     } else {
@@ -146,10 +171,31 @@ searchInput.addEventListener('keydown', (e) => {
     }
 });
 
-toggleUnitButton.addEventListener('click', () => {
-    currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
-    if (lastSearchedCity) {
-        getWeather(lastSearchedCity); // Fetch weather for the last searched city with new unit
+myLocationButton.addEventListener('click', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            lastCoords = { lat, lon }; // Update last known coordinates
+            lastSearchType = 'coords'; // Update last search type
+            getWeatherByCoords(lat, lon);
+        }, (error) => {
+            console.error('Geolocation error:', error.message);
+        });
+    } else {
+        console.error('Geolocation is not supported by this browser.');
     }
 });
 
+const refetchWeather = () => {
+    if (lastSearchedCity && lastSearchType === 'city') {
+        getWeather(lastSearchedCity);
+    } else if (lastCoords.lat && lastCoords.lon && lastSearchType === 'coords') {
+        getWeatherByCoords(lastCoords.lat, lastCoords.lon);
+    }
+};
+
+toggleUnitButton.addEventListener('click', () => {
+    currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
+    refetchWeather(); // Refetch weather data with the new unit
+});
