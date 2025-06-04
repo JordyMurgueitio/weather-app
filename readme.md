@@ -5,7 +5,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
 ![OpenWeatherMap](https://img.shields.io/badge/API-OpenWeatherMap-007ACC?style=for-the-badge&logo=cloudflare&logoColor=white)
 
-A responsive weather app built with vanilla JavaScript\*\*, HTML, and CSS that fetches real-time weather data from the OpenWeatherMap API. Users can search by city name or current location to view current weather conditions, including temperature, humidity, wind speed, and more.
+A responsive weather app built with vanilla JavaScript, HTML, and CSS that fetches real-time weather data from the OpenWeatherMap API. Users can search by city name or current location to view current weather conditions, including temperature, humidity, wind speed, and more.
 
 ## 🚀 Live Demo
 
@@ -16,9 +16,8 @@ Check out the live version of the app:
 ## 📸 Screenshots
 
 <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-evenly; align-items: flex-start;">
-  <img src="./assets/readme-screenshot.png" alt="Home view" style="width: 300px;">
-  <img src="./assets/readme-screenshot2.png" alt="app view" style="width: 300px;">
-  <img src="./assets/readme-screenshot3.png" alt="app view mobile" style="width: 300px;">
+  <img src="./assets/readme-screenshot.png" alt="Home view" style="width: 45%;">
+  <img src="./assets/readme-screenshot2.png" alt="app view" style="width: 45%;">
 </div>
 ## ✨ Features
 
