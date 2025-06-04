@@ -23,7 +23,6 @@ const iconMap  = {
     '50n': './assets/fog.png',
 };
 
-
 /* Selecting html elements */
 const errorMessage = document.getElementById('error-message');
 const weatherApp = document.getElementById('weather-app');
@@ -49,6 +48,8 @@ let currentUnit = 'metric'; // default
 let lastSearchedCity = ''; // updates after each search
 let lastSearchType = 'city';
 let lastCoords = { lat: null, lon: null }; // stores last known coordinates
+
+
 
 // Function to fetch weather data based on city name
 const getWeather = async (city) => {
@@ -113,15 +114,15 @@ const setDynamicBackground = (condition, iconCode) => {
     const isNight = iconCode.endsWith('n');
     const backgroundMap = {
         'clear': isNight ? './assets/clear-night-bg.jpg' : './assets/clear-day-bg.jpg',
-        'clouds': './assets/clouds-bg.jpg',
-        'rain': './assets/rain-bg.jpg',
-        'thunderstorm': './assets/thunderstorm-bg.jpg',
-        'snow': './assets/snow-bg.jpg',
-        'drizzle': './assets/rain-bg.jpg',
-        'mist': './assets/haze-bg.jpg',
+        'clouds': isNight ? './assets/clouds-night-bg.jpg' : './assets/clouds-bg.jpg',
+        'rain': isNight ? './assets/rain-night-bg.jpg' : './assets/rain-bg.jpg',
+        'thunderstorm': isNight ? './assets/thunderstorm-night-bg.jpg' : './assets/thunderstorm-day-bg.jpg',
+        'snow': isNight ? './assets/snow-night-bg.jpg' : './assets/snow-bg.jpg',
+        'drizzle': isNight ? './assets/rain-night-bg.jpg' : './assets/rain-bg.jpg',
+        'mist': './assets/mist-bg.jpg',
         'haze': './assets/haze-bg.jpg',
-        'fog': './assets/haze-bg.jpg',
-        'smoke': './assets/haze-bg.jpg',
+        'fog': './assets/fog-bg.jpg',
+        'smoke': './assets/fog-bg.jpg',
     };
     const key = condition.toLowerCase();
     const backgroundImage = backgroundMap[key] || './assets/bg-image.jpg';
@@ -141,6 +142,14 @@ const updateLocalTime = (timezoneOffset) => {
     };
     const timeString = localDate.toLocaleTimeString(undefined, options);
     document.getElementById('local-time').textContent = timeString;
+};
+// Function to refetch weather data based on last search type
+const refetchWeather = () => {
+    if (lastSearchedCity && lastSearchType === 'city') {
+        getWeather(lastSearchedCity);
+    } else if (lastCoords.lat && lastCoords.lon && lastSearchType === 'coords') {
+        getWeatherByCoords(lastCoords.lat, lastCoords.lon);
+    }
 };
 
 
@@ -202,14 +211,6 @@ myLocationButton.addEventListener('click', () => {
         console.error('Geolocation is not supported by this browser.');
     }
 });
-
-const refetchWeather = () => {
-    if (lastSearchedCity && lastSearchType === 'city') {
-        getWeather(lastSearchedCity);
-    } else if (lastCoords.lat && lastCoords.lon && lastSearchType === 'coords') {
-        getWeatherByCoords(lastCoords.lat, lastCoords.lon);
-    }
-};
 
 toggleUnitButton.addEventListener('click', () => {
     currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
