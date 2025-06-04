@@ -19,6 +19,7 @@
                     <input type="text" id="city-input" placeholder="Enter city name">
                     <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
+                <button id="geo-location-button">📍 Use My Location</button>
         </section>
         <p id="error-message" class="error-message" style="display: none;">City not found</p>
         <section id="weather-app" class="weather-app" hidden>
@@ -28,6 +29,7 @@
                     </div>
                     <div class="city-temp-box">
                         <h2 id="city"></h2>
+                        <p id="local-time" class="local-time"></p>
                         <div class="main-temp">
                             <span id="temperature"></span><span class="degree-symbol unit"></span>
                             <button id="unit-toggle" class="unit-toggle" aria-label="Toggle between Celsius and Fahrenheit">
