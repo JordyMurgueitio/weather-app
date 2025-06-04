@@ -128,21 +128,37 @@ const setDynamicBackground = (condition, iconCode) => {
     document.querySelector('.content-wrapper').style.backgroundImage = `url(${backgroundImage})`;
 };
 
+// function to get the local time 
+const updateLocalTime = (timezoneOffset) => {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const localTime = utc + timezoneOffset * 1000;
+    const localDate = new Date(localTime);
+    const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    };
+    const timeString = localDate.toLocaleTimeString(undefined, options);
+    document.getElementById('local-time').textContent = timeString;
+};
+
 
 // Function to update the UI with fetched weather data
 const updateUI = (weatherData) => {
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
-    temperature.textContent = Math.round(weatherData.main.temp);
+    updateLocalTime(weatherData.timezone);
+    temperature.textContent = Math.round(weatherData.main.temp); // Round to one decimal place
     weatherDescription.textContent = weatherData.weather[0].main;
-    feelsLike.textContent = Math.round(weatherData.main.feels_like);
-    minTemperature.textContent = Math.round(weatherData.main.temp_min);
-    maxTemperature.textContent = Math.round(weatherData.main.temp_max);
+    feelsLike.textContent = Math.round(weatherData.main.feels_like * 10) / 10;
+    minTemperature.textContent = Math.round(weatherData.main.temp_min * 10) / 10;
+    maxTemperature.textContent = Math.round(weatherData.main.temp_max * 10) / 10;
     humidity.textContent = weatherData.main.humidity;
     windSpeed.textContent = Math.round(weatherData.wind.speed);
     const iconCode = weatherData.weather[0].icon;
     const customIcon = iconMap[iconCode];
     if (customIcon) {
-        weatherIcon.src = customIcon; // Use custom icon if available
+        weatherIcon.src = customIcon; 
     };
     weatherIcon.alt = weatherData.weather[0].description;
     const weatherCondition = weatherData.weather[0].main.toLowerCase();
