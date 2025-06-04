@@ -19,6 +19,7 @@ Check out the live version of the app:
   <img src="./assets/readme-screenshot.png" alt="Home view" style="width: 45%;">
   <img src="./assets/readme-screenshot2.png" alt="app view" style="width: 45%;">
 </div>
+
 ## ✨ Features
 
 - 🔍 Seach by City
