@@ -1,0 +1,32 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "A modern weather application with forecast, caching, and PWA capabilities",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/",
+    "build": "npm run optimize-images && npm run minify-css && npm run minify-js",
+    "dev": "live-server --port=3000 --watch=./ --open=/",
+    "optimize-images": "echo 'Image optimization would go here'",
+    "minify-css": "echo 'CSS minification would go here'",
+    "minify-js": "echo 'JS minification would go here'",
+    "test": "echo 'Tests would go here'"
+  },
+  "keywords": [
+    "weather",
+    "forecast",
+    "pwa",
+    "javascript",
+    "api"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JordyMurgueitio/weather-app.git"
+  }
+}

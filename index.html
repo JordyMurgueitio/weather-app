@@ -6,6 +6,9 @@
     <title>Weather App</title>
     <!-- Link to styles -->
     <link rel="stylesheet" href="./styles.css">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#4a90e2">
     <!-- Script for fontawesome -->
     <script src="https://kit.fontawesome.com/25ee437153.js" crossorigin="anonymous"></script>
     <!-- Link to js -->
@@ -16,10 +19,11 @@
         <section class="header-container">
                 <h1>🌤️ Weather App</h1>
                 <div class="search-container">
-                    <input type="text" id="city-input" placeholder="Enter city name">
-                    <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <label for="city-input" class="visually-hidden">Enter city name</label>
+                    <input type="text" id="city-input" placeholder="Enter city name" aria-label="Enter city name">
+                    <button id="search-button" aria-label="Search for weather"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-                <button id="geo-location-button">📍 Use My Location</button>
+                <button id="geo-location-button" aria-label="Use my current location">📍 Use My Location</button>
         </section>
         <p id="error-message" class="error-message" style="display: none;">City not found</p>
         <section id="weather-app" class="weather-app" hidden>
@@ -48,6 +52,36 @@
                     <p class="temp-label">Humidity: <span id="humidity" class="result"></span> <span class="unit">%</span></p>
                     <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span> <span class="speed-symbol unit"></span></p>
                 </div>
+        </section>
+
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="loading-spinner" hidden>
+            <div class="spinner"></div>
+            <p>Loading weather data...</p>
+        </div>
+
+        <!-- 5-Day Forecast Section -->
+        <section id="forecast-section" class="forecast-section" hidden>
+            <h3>5-Day Forecast</h3>
+            <div id="forecast-container" class="forecast-container">
+                <!-- Forecast cards will be generated dynamically -->
+            </div>
+        </section>
+
+        <!-- Recent Searches -->
+        <section id="recent-searches" class="recent-searches" hidden>
+            <h3>Recent Searches</h3>
+            <div id="recent-searches-container" class="recent-searches-container">
+                <!-- Recent searches will be populated here -->
+            </div>
+        </section>
+
+        <!-- Weather Alerts -->
+        <section id="weather-alerts" class="weather-alerts" hidden>
+            <h3>⚠️ Weather Alerts</h3>
+            <div id="alerts-container" class="alerts-container">
+                <!-- Weather alerts will be populated here -->
+            </div>
         </section>
     </main>
 </body>

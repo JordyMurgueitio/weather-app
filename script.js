@@ -1,6 +1,6 @@
 const API_KEY = 'ba54bb9c3687f85898cfa1521e635e64';
 const weatherBaseUrl = 'https://api.openweathermap.org/data/2.5/weather';
-
+const forecastBaseUrl = 'https://api.openweathermap.org/data/2.5/forecast';
 /* Custom weather icons */
 const iconMap  = {
     '01n': './assets/moon.png',
@@ -41,57 +41,265 @@ const humidity = document.getElementById('humidity');
 const windSpeed = document.getElementById('wind-speed');
 const degreeSymbols = document.querySelectorAll('.degree-symbol');
 const speedSymbol = document.querySelector('.speed-symbol');
+const loadingSpinner = document.getElementById('loading-spinner');
+const forecastSection = document.getElementById('forecast-section');
+const forecastContainer = document.getElementById('forecast-container');
+const recentSearchesSection = document.getElementById('recent-searches');
+const recentSearchesContainer = document.getElementById('recent-searches-container');
+const weatherAlertsSection = document.getElementById('weather-alerts');
+const alertsContainer = document.getElementById('alerts-container');
 
+
+// CONSTANTS
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+const MAX_RECENT_SEARCHES = 5;
 
 // STATE VARIABLES
 let currentUnit = 'metric'; // default
 let lastSearchedCity = ''; // updates after each search
 let lastSearchType = 'city';
 let lastCoords = { lat: null, lon: null }; // stores last known coordinates
+let weatherCache = new Map(); // Cache for weather data
+let forecastCache = new Map(); // Cache for forecast data
 
+// UTILITY FUNCTIONS
 
+// Function to show/hide loading spinner
+const showLoading = () => {
+    loadingSpinner.removeAttribute('hidden');
+    weatherApp.setAttribute('hidden', true);
+    forecastSection.setAttribute('hidden', true);
+    errorMessage.style.display = 'none';
+};
+
+const hideLoading = () => {
+    loadingSpinner.setAttribute('hidden', true);
+};
+
+// Function to check cache validity
+const isCacheValid = (timestamp) => {
+    return Date.now() - timestamp < CACHE_DURATION;
+};
+
+// Function to get cached data
+const getCachedData = (key, cache) => {
+    const cached = cache.get(key);
+    if (cached && isCacheValid(cached.timestamp)) {
+        return cached.data;
+    }
+    return null;
+};
+
+// Function to set cached data
+const setCachedData = (key, data, cache) => {
+    cache.set(key, {
+        data: data,
+        timestamp: Date.now()
+    });
+};
+
+// Function to save recent search to localStorage
+const saveRecentSearch = (cityName) => {
+    let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    recentSearches = recentSearches.filter(search => search.toLowerCase() !== cityName.toLowerCase());
+    recentSearches.unshift(cityName);
+    recentSearches = recentSearches.slice(0, MAX_RECENT_SEARCHES);
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    displayRecentSearches();
+};
+
+// Function to display recent searches
+const displayRecentSearches = () => {
+    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    if (recentSearches.length > 0) {
+        recentSearchesContainer.innerHTML = '';
+        recentSearches.forEach(city => {
+            const searchItem = document.createElement('button');
+            searchItem.className = 'recent-search-item';
+            searchItem.textContent = city;
+            searchItem.addEventListener('click', () => {
+                searchInput.value = city;
+                searchButton.click();
+            });
+            recentSearchesContainer.appendChild(searchItem);
+        });
+        recentSearchesSection.removeAttribute('hidden');
+    }
+};
 
 // Function to fetch weather data based on city name
 const getWeather = async (city) => {
+    showLoading();
+    
+    const cacheKey = `${city}-${currentUnit}`;
+    const cachedWeather = getCachedData(cacheKey, weatherCache);
+    
+    if (cachedWeather) {
+        updateUI(cachedWeather);
+        hideLoading();
+        getForecast(city);
+        saveRecentSearch(city);
+        return;
+    }
+    
     const requestParams = `?q=${city}&appid=${API_KEY}&units=${currentUnit}`;
     const urlToFetch = `${weatherBaseUrl}${requestParams}`;
     try {
         const response = await fetch(urlToFetch);
         if (response.ok) {
             const weatherData = await response.json();
+            setCachedData(cacheKey, weatherData, weatherCache);
             updateUI(weatherData);
             errorMessage.style.display = 'none';
             weatherApp.removeAttribute('hidden'); 
+            hideLoading();
+            getForecast(city);
+            saveRecentSearch(city);
         } else {
-            errorMessage.style.display = 'block';
-            weatherApp.setAttribute('hidden', true);
+            throw new Error('City not found');
         }
     } catch (error) {
         console.error('Error fetching weather data:', error);
+        errorMessage.textContent = error.message === 'City not found' ? 'City not found' : 'Network error. Please try again.';
         errorMessage.style.display = 'block';
         weatherApp.setAttribute('hidden', true);
+        forecastSection.setAttribute('hidden', true);
+        hideLoading();
     }
+};
+
+// Function to fetch 5-day forecast
+const getForecast = async (city) => {
+    const cacheKey = `forecast-${city}-${currentUnit}`;
+    const cachedForecast = getCachedData(cacheKey, forecastCache);
+    
+    if (cachedForecast) {
+        displayForecast(cachedForecast);
+        return;
+    }
+    
+    const requestParams = `?q=${city}&appid=${API_KEY}&units=${currentUnit}`;
+    const urlToFetch = `${forecastBaseUrl}${requestParams}`;
+    
+    try {
+        const response = await fetch(urlToFetch);
+        if (response.ok) {
+            const forecastData = await response.json();
+            setCachedData(cacheKey, forecastData, forecastCache);
+            displayForecast(forecastData);
+        }
+    } catch (error) {
+        console.error('Error fetching forecast data:', error);
+    }
+};
+
+// Function to display 5-day forecast
+const displayForecast = (forecastData) => {
+    forecastContainer.innerHTML = '';
+    
+    // Group forecasts by day (taking one forecast per day around noon)
+    const dailyForecasts = [];
+    const processedDates = new Set();
+    
+    forecastData.list.forEach(forecast => {
+        const date = new Date(forecast.dt * 1000);
+        const dateString = date.toDateString();
+        
+        if (!processedDates.has(dateString) && dailyForecasts.length < 5) {
+            // Try to get forecast around noon (12:00) or the first available for the day
+            if (date.getHours() >= 12 || !processedDates.has(dateString)) {
+                dailyForecasts.push(forecast);
+                processedDates.add(dateString);
+            }
+        }
+    });
+    
+    dailyForecasts.forEach((forecast, index) => {
+        const forecastCard = document.createElement('div');
+        forecastCard.className = 'forecast-card';
+        
+        const date = new Date(forecast.dt * 1000);
+        const dayName = index === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
+        const iconCode = forecast.weather[0].icon;
+        const customIcon = iconMap[iconCode] || `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+        
+        forecastCard.innerHTML = `
+            <div class="forecast-day">${dayName}</div>
+            <img src="${customIcon}" alt="${forecast.weather[0].description}" class="forecast-icon">
+            <div class="forecast-temps">
+                <span class="forecast-high">${Math.round(forecast.main.temp_max)}°</span>
+                <span class="forecast-low">${Math.round(forecast.main.temp_min)}°</span>
+            </div>
+            <div class="forecast-desc">${forecast.weather[0].main}</div>
+        `;
+        
+        forecastContainer.appendChild(forecastCard);
+    });
+    
+    forecastSection.removeAttribute('hidden');
 };
 
 // Function to fetch weather data based on geolocation
 const getWeatherByCoords = async (lat, lon) => {
+    showLoading();
+    
+    const cacheKey = `${lat}-${lon}-${currentUnit}`;
+    const cachedWeather = getCachedData(cacheKey, weatherCache);
+    
+    if (cachedWeather) {
+        updateUI(cachedWeather);
+        hideLoading();
+        getForecastByCoords(lat, lon);
+        return;
+    }
+    
     const requestParams = `?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${currentUnit}`;
     const urlToFetch = `${weatherBaseUrl}${requestParams}`;
     try {
         const response = await fetch(urlToFetch);
         if (response.ok) {
             const weatherData = await response.json();
+            setCachedData(cacheKey, weatherData, weatherCache);
             updateUI(weatherData);
             errorMessage.style.display = 'none';
-            weatherApp.removeAttribute('hidden'); 
+            weatherApp.removeAttribute('hidden');
+            hideLoading();
+            getForecastByCoords(lat, lon);
         } else {
-            errorMessage.style.display = 'block';
-            weatherApp.setAttribute('hidden', true);
+            throw new Error('Location weather not found');
         }
     } catch (error) {
         console.error('Geolocation fetch error:', error);
+        errorMessage.textContent = 'Unable to fetch weather for your location';
         errorMessage.style.display = 'block';
         weatherApp.setAttribute('hidden', true);
+        forecastSection.setAttribute('hidden', true);
+        hideLoading();
+    }
+};
+
+// Function to fetch forecast by coordinates
+const getForecastByCoords = async (lat, lon) => {
+    const cacheKey = `forecast-${lat}-${lon}-${currentUnit}`;
+    const cachedForecast = getCachedData(cacheKey, forecastCache);
+    
+    if (cachedForecast) {
+        displayForecast(cachedForecast);
+        return;
+    }
+    
+    const requestParams = `?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${currentUnit}`;
+    const urlToFetch = `${forecastBaseUrl}${requestParams}`;
+    
+    try {
+        const response = await fetch(urlToFetch);
+        if (response.ok) {
+            const forecastData = await response.json();
+            setCachedData(cacheKey, forecastData, forecastCache);
+            displayForecast(forecastData);
+        }
+    } catch (error) {
+        console.error('Error fetching forecast data:', error);
     }
 };
 
@@ -152,12 +360,14 @@ const refetchWeather = () => {
     }
 };
 
-
 // Function to update the UI with fetched weather data
 const updateUI = (weatherData) => {
+    lastSearchedCity = weatherData.name;
+    lastSearchType = 'city';
+    
     cityName.textContent = `${weatherData.name}, ${weatherData.sys.country}`;
     updateLocalTime(weatherData.timezone);
-    temperature.textContent = Math.round(weatherData.main.temp); // Round to one decimal place
+    temperature.textContent = Math.round(weatherData.main.temp);
     weatherDescription.textContent = weatherData.weather[0].main;
     feelsLike.textContent = Math.round(weatherData.main.feels_like * 10) / 10;
     minTemperature.textContent = Math.round(weatherData.main.temp_min * 10) / 10;
@@ -215,4 +425,22 @@ myLocationButton.addEventListener('click', () => {
 toggleUnitButton.addEventListener('click', () => {
     currentUnit = currentUnit === 'metric' ? 'imperial' : 'metric';
     refetchWeather(); // Refetch weather data with the new unit
+});
+
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', () => {
+    displayRecentSearches();
 });
