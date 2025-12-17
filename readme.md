@@ -27,7 +27,7 @@ A modern, responsive weather application built with vanilla JavaScript, featurin
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://your-weather-app-url.com) (Update with your deployment URL)
+[View Live Demo](https://jordymurgueitio.github.io/weather-app/)
 
 ## 📱 Screenshots
 
@@ -76,9 +76,3 @@ weather-app/
 └── README.md          # Project documentation
 ```
 
-
-
-
----
-
-_Built with ❤️ and modern web technologies_
