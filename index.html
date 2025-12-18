@@ -17,10 +17,10 @@
 <body>
     <main class="content-wrapper">
         <section class="header-container">
-                <h1>🌤️ Weather App</h1>
+                <h1 class="app-title">🌤️ Weather App</h1>
                 <div class="search-container">
                     <label for="city-input" class="visually-hidden">Enter city name</label>
-                    <input type="text" id="city-input" placeholder="Enter city name" aria-label="Enter city name">
+                    <input type="text" id="city-input" placeholder="Search for a city..." aria-label="Enter city name">
                     <button id="search-button" aria-label="Search for weather"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 <button id="geo-location-button" aria-label="Use my current location">📍 Use My Location</button>
@@ -48,16 +48,34 @@
                     <p class="temp-label">Condition: <span id="description" class="result"></span></p>
                     <p class="temp-label">Feels Like: <span id="feels-like" class="result"></span> <span class="degree-symbol unit"></span></p>
                 </div>
-                <div class="additional-info-container">
+                <div class="additional-info-container" role="complementary" aria-label="Additional weather information">
                     <p class="temp-label">Humidity: <span id="humidity" class="result"></span> <span class="unit">%</span></p>
                     <p class="temp-label">Wind Speed: <span id="wind-speed" class="result"></span> <span class="speed-symbol unit"></span></p>
+                </div>
+                <div class="extra-info-container" role="complementary" aria-label="Extra weather details">
+                    <div class="info-item">
+                        <span class="info-label">Pressure</span>
+                        <span class="info-value"><span id="pressure"></span> hPa</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Visibility</span>
+                        <span class="info-value"><span id="visibility"></span> km</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Sunrise</span>
+                        <span class="info-value" id="sunrise">--:--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Sunset</span>
+                        <span class="info-value" id="sunset">--:--</span>
+                    </div>
                 </div>
         </section>
 
         <!-- Loading Spinner -->
         <div id="loading-spinner" class="loading-spinner" hidden>
             <div class="spinner"></div>
-            <p>Loading weather data...</p>
+            <p>Fetching weather data...</p>
         </div>
 
         <!-- 5-Day Forecast Section -->

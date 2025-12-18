@@ -48,6 +48,10 @@ const recentSearchesSection = document.getElementById('recent-searches');
 const recentSearchesContainer = document.getElementById('recent-searches-container');
 const weatherAlertsSection = document.getElementById('weather-alerts');
 const alertsContainer = document.getElementById('alerts-container');
+const pressureElement = document.getElementById('pressure');
+const visibilityElement = document.getElementById('visibility');
+const sunriseElement = document.getElementById('sunrise');
+const sunsetElement = document.getElementById('sunset');
 
 
 // CONSTANTS
@@ -160,7 +164,13 @@ const getWeather = async (city) => {
         }
     } catch (error) {
         console.error('Error fetching weather data:', error);
-        errorMessage.textContent = error.message === 'City not found' ? 'City not found' : 'Network error. Please try again.';
+        const errorMessages = {
+            'City not found': '🌍 City not found. Try checking the spelling or use a different city name.',
+            'Network error': '📡 Connection issue. Please check your internet and try again.',
+        };
+        errorMessage.textContent = error.message === 'City not found' 
+            ? errorMessages['City not found']
+            : errorMessages['Network error'];
         errorMessage.style.display = 'block';
         weatherApp.setAttribute('hidden', true);
         forecastSection.setAttribute('hidden', true);
@@ -217,6 +227,7 @@ const displayForecast = (forecastData) => {
     dailyForecasts.forEach((forecast, index) => {
         const forecastCard = document.createElement('div');
         forecastCard.className = 'forecast-card';
+        forecastCard.style.animationDelay = `${index * 0.1}s`;
         
         const date = new Date(forecast.dt * 1000);
         const dayName = index === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
@@ -270,7 +281,7 @@ const getWeatherByCoords = async (lat, lon) => {
         }
     } catch (error) {
         console.error('Geolocation fetch error:', error);
-        errorMessage.textContent = 'Unable to fetch weather for your location';
+        errorMessage.textContent = '📍 Unable to fetch weather for your location. Please try again or search manually.';
         errorMessage.style.display = 'block';
         weatherApp.setAttribute('hidden', true);
         forecastSection.setAttribute('hidden', true);
@@ -351,6 +362,17 @@ const updateLocalTime = (timezoneOffset) => {
     const timeString = localDate.toLocaleTimeString(undefined, options);
     document.getElementById('local-time').textContent = timeString;
 };
+
+// Function to format sunrise/sunset times
+const formatTime = (timestamp, timezoneOffset) => {
+    const date = new Date((timestamp + timezoneOffset) * 1000);
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+};
 // Function to refetch weather data based on last search type
 const refetchWeather = () => {
     if (lastSearchedCity && lastSearchType === 'city') {
@@ -374,6 +396,13 @@ const updateUI = (weatherData) => {
     maxTemperature.textContent = Math.round(weatherData.main.temp_max * 10) / 10;
     humidity.textContent = weatherData.main.humidity;
     windSpeed.textContent = Math.round(weatherData.wind.speed);
+    
+    // New fields
+    pressureElement.textContent = weatherData.main.pressure;
+    visibilityElement.textContent = (weatherData.visibility / 1000).toFixed(1);
+    sunriseElement.textContent = formatTime(weatherData.sys.sunrise, weatherData.timezone);
+    sunsetElement.textContent = formatTime(weatherData.sys.sunset, weatherData.timezone);
+    
     const iconCode = weatherData.weather[0].icon;
     const customIcon = iconMap[iconCode];
     if (customIcon) {
@@ -395,7 +424,11 @@ searchButton.addEventListener('click', () => {
         getWeather(city);
         searchInput.value = ''; // Clear the input field after search
     } else {
-        console.log('Please enter a city name');
+        errorMessage.textContent = '✍️ Please enter a city name to search.';
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 3000);
     };
     errorMessage.style.display = 'none'; // Hide error message on new search
 });
@@ -416,9 +449,15 @@ myLocationButton.addEventListener('click', () => {
             getWeatherByCoords(lat, lon);
         }, (error) => {
             console.error('Geolocation error:', error.message);
+            errorMessage.textContent = '📍 Location access denied. Please enable location services or search manually.';
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 4000);
         });
     } else {
-        console.error('Geolocation is not supported by this browser.');
+        errorMessage.textContent = '🚫 Geolocation is not supported by your browser.';
+        errorMessage.style.display = 'block';
     }
 });
 
