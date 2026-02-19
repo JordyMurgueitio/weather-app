@@ -17,14 +17,6 @@ A modern, responsive weather application built with vanilla JavaScript, featurin
 - **Geolocation Support**: Automatic weather detection based on user location
 - **Unit Conversion**: Toggle between Celsius/Fahrenheit and metric/imperial units
 
-### Features
-
-- **Intelligent Caching**: 10-minute cache system to reduce API calls and improve performance
-- **Recent Searches**: Local storage of last 5 searched cities for quick access
-- **Loading States**: Smooth loading animations and user feedback
-- **Error Handling**: Comprehensive network error handling with retry functionality
-- **Progressive Web App (PWA)**: Installable app with offline capabilities
-
 ## 🚀 Live Demo
 
 [View Live Demo](https://jordymurgueitio.github.io/weather-app/)
@@ -46,33 +38,4 @@ _Mobile responsive design_
 - **Build Tools**: Live Server (for development)
 - **Version Control**: Git
 
-## Run the application**
-   ```bash
-   npm start
-   ```
-   The app will be available at `http://localhost:3000`
-
-## API Reference
-
-This app uses the OpenWeatherMap API:
-
-- Current Weather Data API
-- 5 Day Weather Forecast API
-- Geocoding API for location services
-
-## Project Structure
-
-```
-weather-app/
-├── index.html          # Main HTML file
-├── styles.css          # Styling and responsive design
-├── script.js           # Main application logic
-├── manifest.json       # PWA manifest
-├── sw.js              # Service worker for offline functionality
-├── package.json       # Dependencies and scripts
-├── assets/            # Images and icons
-│   ├── weather icons/
-│   └── background images/
-└── README.md          # Project documentation
-```
 
